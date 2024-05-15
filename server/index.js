@@ -36,6 +36,7 @@ app.listen(PORT, () => {
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 
+
 // end of app routing
 //app middleware
 

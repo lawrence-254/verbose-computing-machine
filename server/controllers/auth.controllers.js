@@ -1,6 +1,6 @@
 import User from '../models/user.models.js';
 import bycrypt from 'bcryptjs';
-import errorHandler from '../utils/errorHandler.js';
+import { errorHandler } from '../utils/error.utils.js';
 import jwt from 'jsonwebtoken';
 
 /**
@@ -53,28 +53,32 @@ export const register = async (req, res, next) => {
     *
  */
 export const login = async (req, res, next) => {
-    // Get the username, email and password from the request body
     const { username, email, password } = req.body;
     try {
         // Check if the user exists in the database
         const userExist = await User.findOne({ $or: [{ username }, { email }] });
-        // If the user does not exist, return an error message
+
         if (!userExist) {
             // Return a 404 error message
-            return next(errorHandler(404, 'User not found, Check your email or username'))
+            return next(errorHandler(404, 'User not found. Check your email or username.'));
         }
+
         // Compare the password provided with the password in the database
-        const correctPassword = bycrypt.compareSync(password, userExist.password);
-        // If the password is incorrect, return an error message
+        const correctPassword = await bcrypt.compare(password, userExist.password);
+
         if (!correctPassword) {
-            // Return a 404 error message
-            return next(errorHandler(404, 'Wrong Password'))
+            // Return a 401 error message for unauthorized access
+            return next(errorHandler(401, 'Incorrect password.'));
         }
+
         // Create a token for the user
         const token = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET, { expiresIn: '3h' });
+
         // Set the token in a cookie
-        res.cookie('token', token, { httpOnly: true, expires: new Date(Date.now() + 3 * 60 * 60 * 1000) }).status(200).json({ userExist });
+        res.cookie('token', token, { httpOnly: true, expires: new Date(Date.now() + 3 * 60 * 60 * 1000) })
+            .status(200)
+            .json({ userId: userExist._id, username: userExist.username });
     } catch (err) {
-        next(err);
+        next(err); // Pass any errors to the error handling middleware
     }
-}
+};
