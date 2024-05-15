@@ -150,7 +150,7 @@ const Register = () => {
       </FormContainer>
       <p>Have an account? <Link to="/login">LOGIN</Link></p>
       {error && <p style={{color: 'red'}}>{error}</p>}
-      l
+      
     </MainContainer>
   )
 }
