@@ -1,6 +1,6 @@
 import { set } from 'mongoose';
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 
 
@@ -77,6 +77,7 @@ const Register = () => {
   const [data, setData]=useState({});
   const [error, setError]=useState('');
   const [loading, setLoading]=useState(false);
+  const navigate = useNavigate();
 
 
   const handleChange = (e) => {
@@ -102,6 +103,7 @@ const Register = () => {
   }
   setLoading(false);
   setError('');
+  navigate('/login');
 }catch(err){
   setLoading(false);
   setError(err.message || 'An error has occured');
@@ -148,6 +150,7 @@ const Register = () => {
       </FormContainer>
       <p>Have an account? <Link to="/login">LOGIN</Link></p>
       {error && <p style={{color: 'red'}}>{error}</p>}
+      l
     </MainContainer>
   )
 }
