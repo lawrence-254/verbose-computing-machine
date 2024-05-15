@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 
@@ -74,6 +74,9 @@ const FormContainer = styled.div`
 
 const Login = () => {
   const [data, setData] = useState({});
+  const [error, setError]=useState('');
+  const [loading, setLoading]=useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setData({
@@ -82,28 +85,51 @@ const Login = () => {
     })
   }
 
-  console.log(data);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      setLoading(true);
+      const response = await fetch('api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      if(result.error){
+        setError(result.error);
+      } else {
+        localStorage.setItem('token', result.token);
+        navigate('/dashboard');
+      }
+      setLoading(false);
+    } catch(err){
+      console.log(err);
+      setLoading(false);
+    }
+  }
   return (
-    <MainContainer>
-      <Title>LOGIN</Title>
-      <FormContainer>
-        <form>
-      <div className="form-group">
-  <label htmlFor="emailOrUsername">Email or Username</label>
-  <input type="text" className="form-control" id="emailOrUsername"  placeholder='Enter user name or Email' onChange={handleChange}/>
-</div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" id="password" placeholder='Enter password' onChange={handleChange}/>
-          </div>
-          <button type="submit" className="btn btn-primary">LOGIN</button>
-        </form>
-      </FormContainer>
-            <p>Don't have an account? <Link to="/register">REGISTER</Link></p>
-
-
-    </MainContainer>
+  <MainContainer>
+    <Title>LOGIN</Title>
+    <FormContainer>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="emailOrUsername">Email or Username</label>
+          <input type="text" className="form-control" id="emailOrUsername"  placeholder='Enter user name or Email' onChange={handleChange}/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input type="password" className="form-control" id="password" placeholder='Enter password' onChange={handleChange}/>
+        </div>
+        <button type="submit" className="btn btn-primary">{
+          loading ? 'Loading...' : 'LOGIN'
+        }</button>
+      </form>
+    </FormContainer>
+    <p>Don't have an account? <Link to="/register">REGISTER</Link></p>
+    {error && <p style={{color: 'red'}}>{error}</p>}
+  </MainContainer>
   )
 }
 
