@@ -64,7 +64,7 @@ export const login = async (req, res, next) => {
         }
 
         // Compare the password provided with the password in the database
-        const correctPassword = await bcrypt.compare(password, userExist.password);
+        const correctPassword = await bycrypt.compare(password, userExist.password);
 
         if (!correctPassword) {
             // Return a 401 error message for unauthorized access
@@ -74,10 +74,11 @@ export const login = async (req, res, next) => {
         // Create a token for the user
         const token = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET, { expiresIn: '3h' });
 
+        const { password: passFromDb, ...user } = userExist.toObject();
         // Set the token in a cookie
         res.cookie('token', token, { httpOnly: true, expires: new Date(Date.now() + 3 * 60 * 60 * 1000) })
             .status(200)
-            .json({ userId: userExist._id, username: userExist.username });
+            .json({ user });
     } catch (err) {
         next(err); // Pass any errors to the error handling middleware
     }
