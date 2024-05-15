@@ -97,14 +97,14 @@ const Register = () => {
   const resData = await res.json();
   if (resData.success === false) {
     setLoading(false);
-    setError(resData.message || 'An error occured');
+    setError(resData.message || 'An error has occured');
     return;
   }
   setLoading(false);
   setError('');
 }catch(err){
   setLoading(false);
-  setError(err.message || 'An error occured');
+  setError(err.message || 'An error has occured');
 }
   }
   return (
