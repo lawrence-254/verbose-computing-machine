@@ -71,6 +71,9 @@ export const login = async (req, res, next) => {
             return next(errorHandler(404, 'Wrong Password'))
         }
         // Create a token for the user
+        const token = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET, { expiresIn: '3h' });
+        // Set the token in a cookie
+        res.cookie('token', token, { httpOnly: true, expires: new Date(Date.now() + 3 * 60 * 60 * 1000) }).status(200).json({ userExist });
     } catch (err) {
         next(err);
     }
