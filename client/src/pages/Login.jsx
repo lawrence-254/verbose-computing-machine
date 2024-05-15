@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { set } from 'mongoose';
 
 
 const MainContainer = styled.div`
@@ -97,18 +98,19 @@ const Login = () => {
         body: JSON.stringify(data)
       });
       const result = await response.json();
-      if(result.error){
-        setError(result.error);
-      } else {
-        localStorage.setItem('token', result.token);
-        navigate('/dashboard');
-      }
-      setLoading(false);
-    } catch(err){
-      console.log(err);
-      setLoading(false);
-    }
+      if(result.success === false){
+        setLoading(false);
+        setError(result.message || 'An error has occured');
+    return;
   }
+  setLoading(false);
+  setError('');
+  navigate('/home');
+}catch(err){
+  setLoading(false);
+  setError(err.message || 'An error has occured');
+}
+}
   return (
   <MainContainer>
     <Title>LOGIN</Title>
@@ -122,9 +124,7 @@ const Login = () => {
           <label htmlFor="password">Password</label>
           <input type="password" className="form-control" id="password" placeholder='Enter password' onChange={handleChange}/>
         </div>
-        <button type="submit" className="btn btn-primary">{
-          loading ? 'Loading...' : 'LOGIN'
-        }</button>
+        <button type="submit" className="btn btn-primary">{loading ? 'Loading...' : 'LOGIN'}</button>
       </form>
     </FormContainer>
     <p>Don't have an account? <Link to="/register">REGISTER</Link></p>
