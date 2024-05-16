@@ -78,7 +78,7 @@ export const login = async (req, res, next) => {
         // Set the token in a cookie
         res.cookie('token', token, { httpOnly: true, expires: new Date(Date.now() + 3 * 60 * 60 * 1000) })
             .status(200)
-            .json({ user });
+            .json({ user, token });
     } catch (err) {
         next(err); // Pass any errors to the error handling middleware
     }
