@@ -86,30 +86,26 @@ const Login = () => {
     })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try{
-      setLoading(true);
-      const response = await fetch('api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const result = await response.json();
-      if(result.success === false){
-        setLoading(false);
-        setError(result.message || 'An error has occured');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  const response = await fetch('api/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  const result = await response.json();
+  if(result.success === false){
+    setLoading(false);
+    setError(result.message || 'An error has occured');
     return;
   }
   setLoading(false);
   setError('');
-  navigate('/home');
-}catch(err){
-  setLoading(false);
-  setError(err.message || 'An error has occured');
-}
+  navigate('/home', {state: {user: result}});
+
 }
   return (
   <MainContainer>
@@ -127,7 +123,7 @@ const Login = () => {
         <button type="submit" className="btn btn-primary">{loading ? 'Loading...' : 'LOGIN'}</button>
       </form>
     </FormContainer>
-    <p>Don't have an account? <Link to="/register">REGISTER</Link></p>
+    <p>Dont have an account? <Link to="/register">REGISTER</Link></p>
     {error && <p style={{color: 'red'}}>{error}</p>}
   </MainContainer>
   )
