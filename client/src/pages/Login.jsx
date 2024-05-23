@@ -79,12 +79,6 @@ const Login = () => {
   const [loading, setLoading]=useState(false);
   const navigate = useNavigate();
 
-  // const handleChange = (e) => {
-  //   setData({
-  //     ...data,
-  //     [e.target.id]: e.target.value
-  //   })
-  // }
 
     const handleChange = (e) => {
     const { id, value } = e.target;
@@ -103,7 +97,7 @@ const handleSubmit = async (e) => {
 
 
 try{
-  const response = await fetch('/api/auth/login', {
+  const response = await fetch('api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

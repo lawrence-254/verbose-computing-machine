@@ -53,10 +53,11 @@ export const register = async (req, res, next) => {
     *
  */
 export const login = async (req, res, next) => {
-    const { username, email, password } = req.body;
+    const { emailOrUsername, password } = req.body;
     try {
         // Check if the user exists in the database
-        const userExist = await User.findOne({ $or: [{ username }, { email }] });
+        const userExist = await User.findOne({ $or: [{ username: emailOrUsername }, { email: emailOrUsername }] });
+        console.log(userExist);
 
         if (!userExist) {
             // Return a 404 error message
