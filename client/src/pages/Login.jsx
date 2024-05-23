@@ -79,17 +79,31 @@ const Login = () => {
   const [loading, setLoading]=useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setData({
-      ...data,
-      [e.target.id]: e.target.value
-    })
-  }
+  // const handleChange = (e) => {
+  //   setData({
+  //     ...data,
+  //     [e.target.id]: e.target.value
+  //   })
+  // }
+
+    const handleChange = (e) => {
+    const { id, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [id]: value
+    }));
+  };
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  setLoading(true);
-  const response = await fetch('api/auth/login', {
+      setLoading(true);
+    setError('');
+        console.log('Submitting data:', data); // Debug statement
+
+
+try{
+  const response = await fetch('/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -97,6 +111,7 @@ const handleSubmit = async (e) => {
     body: JSON.stringify(data)
   });
   const result = await response.json();
+ console.log('Server response:', result); // Debug statement
   if(result.success === false){
     setLoading(false);
     setError(result.message || 'An error has occured');
@@ -105,6 +120,10 @@ const handleSubmit = async (e) => {
   setLoading(false);
   setError('');
   navigate('/home', {state: {user: result}});
+  }
+  catch(err){
+    console.log(err);
+  }
 
 }
   return (
