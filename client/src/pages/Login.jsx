@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { set } from 'mongoose';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {loginStart, loginSuccess, loginFailure} from '../redux/actions/authActions';
 
 
@@ -77,8 +77,8 @@ const FormContainer = styled.div`
 
 const Login = () => {
   const [data, setData] = useState({});
-  const [error, setError]=useState('');
-  const [loading, setLoading]=useState(false);
+  const{loading, error} = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
 
