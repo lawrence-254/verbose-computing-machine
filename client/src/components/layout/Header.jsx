@@ -53,6 +53,13 @@ const HeaderNav = styled.div`
 display: flex;
 align-items: center;
 background-color: #6161;
+
+`;
+
+const SpanItems = styled.span`
+display: row;
+align-items: center;
+margin: 0 20px 0 20px;
 `;
 
 const Header = () => {
@@ -64,15 +71,15 @@ const Header = () => {
 
         <HeaderNav>
         <span>
-          <ul>
+
           <Link to="/">
-            <li>Home</li>
+            <SpanItems>Home</SpanItems>
           </Link>
             <Link to="/about">
-            <li>About</li>
+            <SpanItems>About</SpanItems>
           </Link>
-              <li>Shop</li>
-          </ul>
+              <SpanItems>Shop</SpanItems>
+
         </span>
         <Link to="/login">
             <button style={{ width: "100px", height: "30px", borderRadius: "10px" }}>Login</button>

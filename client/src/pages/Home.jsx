@@ -1,9 +1,12 @@
+import Layout from "../components/layout/Layout"
+
+
 const Home = () => {
   return (
-    <div>
-        Home
+      <Layout>
+        <h1>home</h1>
         <img src="../assets/c.png" />
-    </div>
+    </Layout>
   )
 }
 

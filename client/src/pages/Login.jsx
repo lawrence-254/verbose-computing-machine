@@ -113,7 +113,7 @@ try{
   }
   setLoading(false);
   setError('');
-  navigate('/home', {state: {user: result}});
+  navigate('/', {state: {user: result}});
   }
   catch(err){
     console.log(err);

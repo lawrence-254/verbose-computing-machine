@@ -1,3 +1,5 @@
+import Layout from "../components/layout/Layout"
+
 const Profile = () => {
   return (
     <div>
