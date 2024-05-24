@@ -8,14 +8,14 @@ display: flex;
 flex-direction:column;
 align-items:center;
 width: 100vw;
-outline: 5px solid  #04DDB2
+outline: 5px solid  #04DDB2;
 `;
 const InnerLayoutContainer = styled.div`
 flex: 1;
-top: 140px;
+margin-top: 84px;
 padding: 0px,2px;
-max-width: 70%
-outline: 1px solid #04DDB2
+max-width: 80%;
+outline: 1px solid #04DDB2;
 background-color: red;
 `
 
