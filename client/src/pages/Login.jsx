@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { set } from 'mongoose';
+import {useDispatch} from 'react-redux';
+import {login} from '../redux/actions/authActions';
 
 
 const MainContainer = styled.div`
