@@ -93,7 +93,7 @@ const Login = () => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-      setLoading(true);
+     dispatch(loginStart());
     setError('');
         console.log('Submitting data:', data); // Debug statement
 
@@ -109,16 +109,14 @@ try{
   const result = await response.json();
  console.log('Server response:', result); // Debug statement
   if(result.success === false){
-    setLoading(false);
-    setError(result.message || 'An error has occured');
+    dispatch(loginFailure(result.message || 'An error has occured'));
     return;
   }
-  setLoading(false);
-  setError('');
+ dispatch(loginSuccess(result));
   navigate('/', {state: {user: result}});
   }
   catch(err){
-    console.log(err);
+    dispatch(loginFailure('An error has occured', err.message));
   }
 
 }
